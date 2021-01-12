@@ -19,6 +19,19 @@ namespace Basics.Controllers
             return View();
         }
 
+        [Authorize("Claim.DoB")]
+        public IActionResult SecretDoB()
+        {
+            return View("Secret");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult SecretRole()
+        {
+            return View("Secret");
+        }
+
+
         public IActionResult Authenticate()
         {
             //build our claimss
@@ -26,6 +39,8 @@ namespace Basics.Controllers
             {
               new Claim(ClaimTypes.Name, "Bob"),
               new Claim(ClaimTypes.Email, "Bob@bob.com"),
+              new Claim(ClaimTypes.DateOfBirth, "12/12/2021"),
+              new Claim(ClaimTypes.Role, "Admin" ),
               new Claim("Some.Unique.Claim", "Bob Is Cool"),
             };
 

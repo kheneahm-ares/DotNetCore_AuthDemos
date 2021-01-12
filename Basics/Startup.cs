@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Basics.AuthorizationRequirements;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using static Basics.AuthorizationRequirements.CustomRequireClaim;
 
 namespace Basics
 {
@@ -30,6 +34,34 @@ namespace Basics
                 config.Cookie.Name = "SomeCookie"; //name of the cookie that we will add after authentication; this will have our claims
                 config.LoginPath = "/Home/Authenticate"; //specifying where we redirect to if we NEED to authenticate
             });
+
+
+            services.AddAuthorization(configure =>
+            {
+                //var defaultAuthBuilder = new AuthorizationPolicyBuilder();
+                //var defaultAuthPolicy = defaultAuthBuilder
+                //                        .RequireAuthenticatedUser()
+                //                        .RequireClaim(ClaimTypes.Role)
+                //                        .Build();
+                //configure.DefaultPolicy = defaultAuthPolicy;
+
+                //configure.AddPolicy("Admin", policyBuilder => policyBuilder.RequireClaim(ClaimTypes.Role, "Admin", "AdminTwo"));
+
+                //what we want to mimic
+                configure.AddPolicy("Claim.DoB", policyBuilder =>
+                {
+                    policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
+                });
+                //our version of handling the claim
+                configure.AddPolicy("Claim.DoB", policyBuilder =>
+                {
+                    policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
+
+                 });
+            });
+
+            //register our handler
+            services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
 
             services.AddControllersWithViews();
         }

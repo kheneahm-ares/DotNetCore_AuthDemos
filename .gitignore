@@ -3,3 +3,8 @@ bin/
 obj/
 Properties
 appsettings.Development.json
+*.v2
+/.vs/Authentication/config/applicationhost.config
+/.vs/Authentication/v16/.suo
+/Basics/Basics.csproj.user
+/IdentityDemo/IdentityDemo.csproj.user
