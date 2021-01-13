@@ -1,1 +1,10 @@
 <h1>HomePage</h1>
+
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService _authService 
+
+@if((await _authService.AuthorizeAsync(User, "Claim.DoB")).Succeeded)
+{
+    <h1>User has DoB claim</h1>
+}
