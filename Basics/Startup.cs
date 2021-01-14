@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Basics.AuthorizationRequirements;
+using Basics.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,16 +64,17 @@ namespace Basics
 
             //register our handler
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
+            services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
 
             services.AddControllersWithViews(config =>
             {
-                var defaultAuthBuilder = new AuthorizationPolicyBuilder();
-                var defaultAuthPolicy = defaultAuthBuilder
-                                        .RequireAuthenticatedUser()
-                                        .Build();
+                //var defaultAuthBuilder = new AuthorizationPolicyBuilder();
+                //var defaultAuthPolicy = defaultAuthBuilder
+                //                        .RequireAuthenticatedUser()
+                //                        .Build();
 
-                //global auth filter where everything is required
-                config.Filters.Add(new AuthorizeFilter(defaultAuthPolicy)); 
+                ////global auth filter where everything is required
+                //config.Filters.Add(new AuthorizeFilter(defaultAuthPolicy)); 
             });
         }
 
