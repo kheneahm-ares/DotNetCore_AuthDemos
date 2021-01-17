@@ -5,6 +5,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Basics.AuthorizationRequirements;
 using Basics.Controllers;
+using Basics.Transformer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,12 +61,15 @@ namespace Basics
                 {
                     policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
 
-                 });
+                });
             });
 
             //register our handler
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
+
+            //register claimstransformation
+            services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
 
             services.AddControllersWithViews(config =>
             {
