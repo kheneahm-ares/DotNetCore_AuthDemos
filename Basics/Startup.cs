@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Basics.AuthorizationRequirements;
 using Basics.Controllers;
+using Basics.CustomPolicyProviders;
 using Basics.Transformer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using static Basics.AuthorizationRequirements.CustomRequireClaim;
+using static Basics.CustomPolicyProviders.SecurityLevelRequirement;
 
 namespace Basics
 {
@@ -64,9 +66,12 @@ namespace Basics
                 });
             });
 
+            services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
+
             //register our handler
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, SecurityLevelHandler>();
 
             //register claimstransformation
             services.AddScoped<IClaimsTransformation, ClaimsTransformation>();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Basics.CustomPolicyProviders;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,19 @@ namespace Basics.Controllers
             return View("Secret");
         }
 
+        [SecurityLevel(level: 5)]
+        public IActionResult SecurityLevel()
+        {
+            return View("Secret");
+        }
+
+        [SecurityLevel(level: 2)]
+        public IActionResult NotSoSecret()
+        {
+            return View("Secret");
+        }
+
+
 
         public IActionResult Authenticate()
         {
@@ -48,6 +62,7 @@ namespace Basics.Controllers
               new Claim(ClaimTypes.Email, "Bob@bob.com"),
               new Claim(ClaimTypes.DateOfBirth, "12/12/2021"),
               new Claim(ClaimTypes.Role, "Admin" ),
+              new Claim(DynamicPolicies.SecurityLevel, "4" ),
               new Claim("Some.Unique.Claim", "Bob Is Cool"),
             };
 
