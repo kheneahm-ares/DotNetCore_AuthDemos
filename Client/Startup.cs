@@ -45,29 +45,39 @@ namespace Client
 
                     config.Events = new OAuthEvents()
                     {
+
                         //when we receive a token from the server
                         //populate the claims in the HttpContext for the user who authenticated
                         OnCreatingTicket = context =>
                         {
-
-                            var accessToken = context.AccessToken;
-                            var payload = accessToken.Split('.')[1];
-
-
-                            var bytes = Convert.FromBase64String(payload);
-                            var jsonPayload = Encoding.UTF8.GetString(bytes);
-                            var claims = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonPayload);
-
-                            //foreach claim from the token, populate the claims in the HttpContext
-                            foreach (var claim in claims)
+                            try
                             {
-                                context.Identity.AddClaim(new Claim(claim.Key, claim.Value));
+                                var accessToken = context.AccessToken;
+                                var payload = accessToken.Split('.')[1];
+
+
+                                var bytes = Convert.FromBase64String(payload);
+                                var jsonPayload = Encoding.UTF8.GetString(bytes);
+                                var claims = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonPayload);
+
+                                //foreach claim from the token, populate the claims in the HttpContext
+                                foreach (var claim in claims)
+                                {
+                                    context.Identity.AddClaim(new Claim(claim.Key, claim.Value));
+                                }
                             }
+                            catch
+                            {
+
+                            }
+
+
 
                             return Task.CompletedTask;
                         }
                     };
                 });
+            services.AddHttpClient();
 
 
             services.AddControllersWithViews()
