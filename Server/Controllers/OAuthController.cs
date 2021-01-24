@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,17 +37,75 @@ namespace Server.Controllers
             string state)
         {
 
-            const string code = "SomeCODE";
+            //verify username/pass
 
 
-            return Redirect($"{redirect_uri}");
+            //generate code, store in db
+
+            const string code = "SomeCODE"; 
+
+            var query = new QueryBuilder();
+            query.Add("code", code);
+            query.Add("state", state);
+
+
+            return Redirect($"{redirect_uri}{query.ToString()}");
 
         }
 
-        [HttpGet]
-        public IActionResult Token()
+        public async Task<IActionResult> Token(
+            string grant_type, //flow of access_token request
+            string code, //confirmation of authentication process
+            string redirect_uri,
+            string client_id)
         {
-            return View();
+            //some mechanism for validating the code
+            //usually stored in the DB, code expires 
+
+
+
+            //after validate, return access token
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, "Some_Id"), //the id
+                new Claim("MyCustomClaim", "CoolClaim"),
+            };
+
+
+            //create key and algorithm
+            var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+            var key = new SymmetricSecurityKey(secretBytes);
+            var algorithm = SecurityAlgorithms.HmacSha256;
+
+            //use key and algo to create signing credentials
+            var singingCredentials = new SigningCredentials(key, algorithm);
+
+            //create token
+            var token = new JwtSecurityToken(Constants.Issuer,
+                                             Constants.Audience,
+                                             claims,
+                                             notBefore: DateTime.Now,
+                                             expires: DateTime.Now.AddMinutes(60),
+                                             signingCredentials: singingCredentials);
+
+            //turn token into string using handler
+            var access_token = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var responseObject = new
+            {
+                access_token = access_token,
+                token_type = "Bearer",
+                raw_claim = "oauthTutorial"
+            };
+
+            var jsonObj = JsonConvert.SerializeObject(responseObject);
+            var responseBytes = Encoding.UTF8.GetBytes(jsonObj);
+
+
+            //easy way to write to a response
+            await Response.Body.WriteAsync(responseBytes, 0, responseBytes.Length);
+
+            return Redirect(redirect_uri);
 
         }
     }
