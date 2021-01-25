@@ -58,7 +58,8 @@ namespace Server.Controllers
             string grant_type, //flow of access_token request
             string code, //confirmation of authentication process
             string redirect_uri,
-            string client_id)
+            string client_id,
+            string refresh_token)
         {
             //some mechanism for validating the code
             //usually stored in the DB, code expires 
@@ -86,17 +87,22 @@ namespace Server.Controllers
                                              Constants.Audience,
                                              claims,
                                              notBefore: DateTime.Now,
-                                             expires: DateTime.Now.AddMinutes(60),
+                                             expires: grant_type == "refresh_token" ? DateTime.Now.AddMinutes(5) : DateTime.Now.AddSeconds(1),
                                              signingCredentials: singingCredentials);
 
             //turn token into string using handler
             var access_token = new JwtSecurityTokenHandler().WriteToken(token);
 
+            //verify refresh token 
+
+
+            //response info
             var responseObject = new
             {
                 access_token = access_token,
                 token_type = "Bearer",
-                raw_claim = "oauthTutorial"
+                raw_claim = "oauthTutorial",
+                refresh_token = "SomeDefaultValueHere"
             };
 
             var jsonObj = JsonConvert.SerializeObject(responseObject);

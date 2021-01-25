@@ -53,6 +53,7 @@ namespace Server
                             ValidIssuer = Constants.Issuer,
                             ValidAudience = Constants.Audience,
                             IssuerSigningKey = key,
+                            ClockSkew = TimeSpan.Zero
 
                         };
 
