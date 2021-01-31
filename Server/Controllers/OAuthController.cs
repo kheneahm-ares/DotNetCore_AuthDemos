@@ -50,6 +50,7 @@ namespace Server.Controllers
             query.Add("state", state);
 
 
+            //give this code to client which will then redirect back through the backchannel to request a token
             return Redirect($"{redirect_uri}{query.ToString()}");
 
         }

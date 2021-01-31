@@ -23,12 +23,16 @@ namespace Client
             services.AddAuthentication(config =>
             {
                 // we check the cookie to confirm that we are authenticated
+                // without it, there won't be a way for our client to know we are even authenticated and will always redirect us back to server
+                // to try to authenticate
                 config.DefaultAuthenticateScheme = "ClientCookie";
 
                 // when we sign in, we will create a cookie
+                // without it, we will throw an error bc client needs to know what scheme to sign in with
                 config.DefaultSignInScheme = "ClientCookie";
 
                 // where we check if we are allowed to do something/authenticate/challenge the cookie
+                // without it, the client won't know where to hit to validate 
                 config.DefaultChallengeScheme = "OurServer";
 
             })
