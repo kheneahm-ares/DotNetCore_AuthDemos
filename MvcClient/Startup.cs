@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,15 @@ namespace MvcClient
                     config.SaveTokens = true;
 
                     config.ResponseType = "code"; // when we get challenged, we will tell the auth endpoint that we're using auth code flow
+
+                    //configure mappings from user info endpoints response to expected claims
+                    config.ClaimActions.MapUniqueJsonKey("MappedTech.read", "tech.read");
+
+                    //after we get id token, it will do ANOTHER roundtrip to the user endpoint
+                    config.GetClaimsFromUserInfoEndpoint = true;
+
+                    //scopes
+                    config.Scope.Add("tech.scope");
 
                 });
             services.AddControllersWithViews();

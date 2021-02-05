@@ -15,7 +15,15 @@ namespace IdentityServer
             new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "tech.scope",
+                    UserClaims =
+                    {
+                        "tech.read"
+                    }
+                }
             };
 
         public static IEnumerable<ApiResource> GetApis() =>
@@ -39,9 +47,13 @@ namespace IdentityServer
                 ClientSecrets = { new Secret("client_secret_mvc".ToSha256()) },
 
                 AllowedGrantTypes = GrantTypes.Code, //how to retrieve tokens,
-                AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile" }, //what can this client access
+                AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
                 RedirectUris = {"https://localhost:44306/signin-oidc" }, //necessary for Auth Code flow, for client, we know it's using oidc, and this is the default redirect uri set up by oidc
-                RequireConsent = false
+                RequireConsent = false,
+
+
+                //puts all user claims in id token
+                //AlwaysIncludeUserClaimsInIdToken = true
                      
             }
             };
