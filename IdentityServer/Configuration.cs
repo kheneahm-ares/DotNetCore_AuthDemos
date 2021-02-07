@@ -56,6 +56,19 @@ namespace IdentityServer
                 //puts all user claims in id token
                 //AlwaysIncludeUserClaimsInIdToken = true
                      
+            },
+                                  new Client
+            {
+                ClientId = "client_id_js",
+
+                AllowedGrantTypes = GrantTypes.Implicit, //how to retrieve tokens,
+                AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
+                RedirectUris = {"https://localhost:44321/Home/SignIn" }, //what we specified in our js client
+                RequireConsent = false,
+                AllowAccessTokensViaBrowser = true
+
+
+                     
             }
             };
 
