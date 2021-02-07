@@ -26,6 +26,7 @@ namespace IdentityServer
                 var newUser = new IdentityUser("defaultUser");
                 userManager.CreateAsync(newUser, "password").GetAwaiter().GetResult(); //it's okay to block since the app is just starting up
                 userManager.AddClaimAsync(newUser, new Claim("tech.read", "airpods")).GetAwaiter().GetResult();
+                userManager.AddClaimAsync(newUser, new Claim("tech.write", "applepen")).GetAwaiter().GetResult();
 
 
 

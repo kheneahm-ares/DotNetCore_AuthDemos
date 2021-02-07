@@ -28,7 +28,7 @@ namespace IdentityServer
 
         public static IEnumerable<ApiResource> GetApis() =>
             new List<ApiResource> {
-                new ApiResource("ApiOne") { Scopes = {new Scope("scope_one:read")} },
+                new ApiResource("ApiOne", new string[] {"tech.write"}) { Scopes = {new Scope("scope_one:read")} },
                 new ApiResource("ApiTwo") { Scopes = {new Scope("scope_two:read")} }}; //register one
 
         public static IEnumerable<Client> GetClients() =>
@@ -50,6 +50,7 @@ namespace IdentityServer
                 AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
                 RedirectUris = {"https://localhost:44306/signin-oidc" }, //necessary for Auth Code flow, for client, we know it's using oidc, and this is the default redirect uri set up by oidc
                 RequireConsent = false,
+                AllowOfflineAccess = true
 
 
                 //puts all user claims in id token

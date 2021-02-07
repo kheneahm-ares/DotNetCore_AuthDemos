@@ -40,8 +40,13 @@ namespace MvcClient
 
                     //scopes
                     config.Scope.Add("tech.scope");
+                    config.Scope.Add("scope_one:read");
+                    config.Scope.Add("offline_access");
 
                 });
+
+            services.AddHttpClient();
+
             services.AddControllersWithViews();
         }
 
