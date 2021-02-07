@@ -65,7 +65,8 @@ namespace IdentityServer
                 AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
                 RedirectUris = {"https://localhost:44321/Home/SignIn" }, //what we specified in our js client
                 RequireConsent = false,
-                AllowAccessTokensViaBrowser = true
+                AllowAccessTokensViaBrowser = true,
+                AllowedCorsOrigins = { "https://localhost:44321" }
 
 
                      

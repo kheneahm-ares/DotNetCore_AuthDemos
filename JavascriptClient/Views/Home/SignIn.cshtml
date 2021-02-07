@@ -1,4 +1,29 @@
-﻿
-<button onclick="extractTokens()">Extract </button>
+﻿<h1>
+    Sign in page
+</h1>
 
-<script src="~/sign-in-callback.js"></script>
+<button onclick="getUser()">Sign In</button>
+
+<script src="~/js-old/sign-in-callback.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.11.3/oidc-client.min.js"></script>
+
+
+<script>
+    var config = {
+        authority: "https://localhost:44336/",
+        client_id: "client_id_js",
+        response_type: "id_token token",
+        redirect_uri: "https://localhost:44321/Home/SignIn",
+        scope: "openid scope_one:read"
+    };
+
+
+    var userManager = new Oidc.UserManager(config);
+
+    userManager.signinCallback().then(res => {
+        console.log(res);
+    })
+
+
+</script>
