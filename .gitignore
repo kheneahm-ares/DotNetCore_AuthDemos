@@ -8,3 +8,4 @@ appsettings.Development.json
 /.vs/Authentication/v16/.suo
 /Basics/Basics.csproj.user
 /IdentityDemo/IdentityDemo.csproj.user
+/JavascriptClient/JavascriptClient.csproj.user

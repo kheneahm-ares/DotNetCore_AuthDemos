@@ -66,7 +66,8 @@ namespace IdentityServer
                 RedirectUris = {"https://localhost:44321/Home/SignIn" }, //what we specified in our js client
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
-                AllowedCorsOrigins = { "https://localhost:44321" }
+                AllowedCorsOrigins = { "https://localhost:44321" },
+                AccessTokenLifetime = 1
 
 
                      

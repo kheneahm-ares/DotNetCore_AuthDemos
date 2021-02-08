@@ -23,9 +23,15 @@ namespace ApiOne
 
                     //who we are
                     //the identity server has configurations for all APIs the 
-                    config.Audience = "ApiOne"; 
+                    config.Audience = "ApiOne";
 
                 });
+
+            services.AddCors(confg =>
+                confg.AddPolicy("AllowAll",
+                    p => p.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()));
 
             services.AddControllers();
         }
@@ -40,13 +46,15 @@ namespace ApiOne
 
             app.UseRouting();
 
+            app.UseCors("AllowAll");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                            });
+            });
         }
     }
 }
