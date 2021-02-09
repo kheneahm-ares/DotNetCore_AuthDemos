@@ -9,3 +9,4 @@ appsettings.Development.json
 /Basics/Basics.csproj.user
 /IdentityDemo/IdentityDemo.csproj.user
 /JavascriptClient/JavascriptClient.csproj.user
+/IdentityServer/Data/Migrations

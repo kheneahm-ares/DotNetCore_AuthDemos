@@ -34,7 +34,6 @@ namespace MvcClient.Controllers
 
             await RefreshAccessToken();
 
-
             var claims = User.Claims;
 
             var _idToken = new JwtSecurityTokenHandler().ReadJwtToken(idToken);
