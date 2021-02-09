@@ -49,6 +49,7 @@ namespace IdentityServer
                 AllowedGrantTypes = GrantTypes.Code, //how to retrieve tokens,
                 AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
                 RedirectUris = {"https://localhost:44306/signin-oidc" }, //necessary for Auth Code flow, for client, we know it's using oidc, and this is the default redirect uri set up by oidc
+                PostLogoutRedirectUris = {"https://localhost:44306/Home/Index" }, //what we specified in our js client
                 RequireConsent = false,
                 AllowOfflineAccess = true
 
@@ -64,6 +65,7 @@ namespace IdentityServer
                 AllowedGrantTypes = GrantTypes.Implicit, //how to retrieve tokens,
                 AllowedScopes = { "scope_one:read", "scope_two:read", "openid", "profile", "tech.scope" }, //what can this client access
                 RedirectUris = {"https://localhost:44321/Home/SignIn" }, //what we specified in our js client
+                PostLogoutRedirectUris = {"https://localhost:44321/Home/Index" }, //what we specified in our js client
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
                 AllowedCorsOrigins = { "https://localhost:44321" },

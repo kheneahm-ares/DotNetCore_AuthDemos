@@ -32,6 +32,7 @@ namespace MvcClient
 
                     config.ResponseType = "code"; // when we get challenged, we will tell the auth endpoint that we're using auth code flow
 
+                    config.SignedOutCallbackPath = "/Home/Index"; //where we go to after logging out
                     //configure mappings from user info endpoints response to expected claims
                     config.ClaimActions.MapUniqueJsonKey("MappedTech.read", "tech.read");
 

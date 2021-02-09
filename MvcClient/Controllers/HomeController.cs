@@ -25,6 +25,13 @@ namespace MvcClient.Controllers
             return View();
         }
 
+
+        public IActionResult Logout()
+        {
+            return SignOut("MyCookie", "myoidc");
+
+        }
+
         [Authorize]
         public async Task<IActionResult> Secret()
         {

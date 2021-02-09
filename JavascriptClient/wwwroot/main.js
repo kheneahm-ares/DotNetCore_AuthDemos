@@ -6,7 +6,7 @@ var config = {
     response_type: "id_token token",
     redirect_uri: "https://localhost:44321/Home/SignIn",
     scope: "openid scope_one:read",
-    clockSkew: 0
+    post_logout_redirect_uri: "https://localhost:44321/Home/Index"
 };
 
 
@@ -14,6 +14,11 @@ var userManager = new Oidc.UserManager(config);
 
 var signIn = function () {
     userManager.signinRedirect();
+}
+
+
+var signOut = function () {
+    userManager.signoutRedirect();
 }
 
 userManager.getUser().then(user => {
