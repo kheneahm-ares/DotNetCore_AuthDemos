@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using IdentityConfigs = IdentityServer.Configuration;
 
 
 namespace IdentityServer
@@ -66,7 +67,6 @@ namespace IdentityServer
 
             services.AddIdentityServer()
                 .AddAspNetIdentity<IdentityUser>()
-                    .AddDeveloperSigningCredential()
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
                 {
@@ -86,9 +86,9 @@ namespace IdentityServer
                     options.TokenCleanupInterval = 30;
                 })
                 .AddSigningCredential(certificate);
-                //.AddInMemoryApiResources(Configuration.GetApis())
-                //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-                //.AddInMemoryClients(Configuration.GetClients())
+                //.AddInMemoryApiResources(IdentityConfigs.GetApis())
+                //.AddInMemoryIdentityResources(IdentityConfigs.GetIdentityResources())
+                //.AddInMemoryClients(IdentityConfigs.GetClients())
                 //.AddDeveloperSigningCredential(); //generate certificate for signing token like our secret key in jwt
 
             services.AddControllersWithViews();

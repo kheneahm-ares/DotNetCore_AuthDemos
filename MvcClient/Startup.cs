@@ -38,6 +38,7 @@ namespace MvcClient
 
                     //after we get id token, it will do ANOTHER roundtrip to the user endpoint
                     config.GetClaimsFromUserInfoEndpoint = true;
+                    //config.UsePkce = true; //set to true for code flow so not necessary
 
                     //scopes
                     config.Scope.Add("tech.scope");
