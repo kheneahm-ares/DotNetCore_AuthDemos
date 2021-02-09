@@ -10,3 +10,4 @@ appsettings.Development.json
 /IdentityDemo/IdentityDemo.csproj.user
 /JavascriptClient/JavascriptClient.csproj.user
 /IdentityServer/Data/Migrations
+/IdentityServer/ident_cert.pfx

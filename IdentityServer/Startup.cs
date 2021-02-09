@@ -10,7 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 
@@ -18,11 +20,14 @@ namespace IdentityServer
 {
     public class Startup
     {
+        private readonly IWebHostEnvironment _webHostEnv;
+
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnv)
         {
             Configuration = configuration;
+            _webHostEnv = webHostEnv;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -55,6 +60,10 @@ namespace IdentityServer
 
             var migrationsAssembly = typeof(Startup).Assembly.GetName().Name;
 
+            //we would host the cert in our server and the password should be generated/stored in some vault
+            var filePath = Path.Combine(_webHostEnv.ContentRootPath, "ident_cert.pfx");
+            var certificate = new X509Certificate2(filePath, "password");
+
             services.AddIdentityServer()
                 .AddAspNetIdentity<IdentityUser>()
                     .AddDeveloperSigningCredential()
@@ -76,10 +85,11 @@ namespace IdentityServer
                     options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
                 })
+                .AddSigningCredential(certificate);
                 //.AddInMemoryApiResources(Configuration.GetApis())
                 //.AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 //.AddInMemoryClients(Configuration.GetClients())
-                .AddDeveloperSigningCredential(); //generate certificate for signing token like our secret key in jwt
+                //.AddDeveloperSigningCredential(); //generate certificate for signing token like our secret key in jwt
 
             services.AddControllersWithViews();
         }
